@@ -18,6 +18,8 @@ Consulte a [documentação completa](https://pauloleo.gitbook.io/db.js/) para ob
 **Filtrar Dados:**
 
    ```javascript
+   import { db } from 'pl-db-js';
+
    const dados = [
     { name: "Paulo", idade: 18 },
     { name: "Leonardo", idade: 15 },
