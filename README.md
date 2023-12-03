@@ -4,9 +4,9 @@ O DB.js é uma biblioteca JavaScript poderosa e eficiente que simplifica a manip
 
 Para instalar o `DB.js`, use o seguinte comando:
 
-\```bash
+```bash
 npm i pl-db-js
-\```
+
 
 
 ## Documentação
