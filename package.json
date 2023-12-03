@@ -1,0 +1,34 @@
+{
+  "name": "pl-db-js",
+  "version": "1.0.0",
+  "description": "O DB.js é uma biblioteca JavaScript poderosa e eficiente que simplifica a manipulação de dados JSON. Com funcionalidades semelhantes às operações de um ORM (Mapeamento Objeto-Relacional) e baseado em arrays de objetos ou listas do JavaScript, o DB.js oferece métodos encadeados para filtrar, selecionar, adicionar colunas, ordenar e agrupar dados de forma intuitiva e ágil.",
+  "main": "DB.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulo-leo/rux.git"
+  },
+  "keywords": [
+    "orm",
+    "js",
+    "db",
+    "model",
+    "query",
+    "sql",
+    "json",
+    "fast",
+    "filter",
+    "data",
+    "array",
+    "object",
+    "db.js"
+  ],
+  "author": "Paulo Leonardo da S. Cassimiro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/paulo-leo/db/issues"
+  },
+  "homepage": "https://github.com/paulo-leo/db#readme"
+}
