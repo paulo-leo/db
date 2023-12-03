@@ -7,8 +7,7 @@ O DB.js é uma biblioteca JavaScript poderosa e eficiente que simplifica a manip
 Consulte a [documentação completa](https://pauloleo.gitbook.io/db.js/) para obter detalhes sobre a utilização, métodos disponíveis e exemplos de uso do DB.js.
 
 ## Exemplos de Uso
-
-1. **Filtrar Dados:**
+**Filtrar Dados:**
 
    ```javascript
    const resultadoFiltrado = db.table(dados).where('idade', '>', 18).get();
