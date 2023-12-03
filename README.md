@@ -10,5 +10,13 @@ Consulte a [documentação completa](https://pauloleo.gitbook.io/db.js/) para ob
 **Filtrar Dados:**
 
    ```javascript
+   const dados = [
+    { name: "Paulo", idade: 18 },
+    { name: "Leonardo", idade: 15 },
+    { name: "Maria", idade: 19 },
+    { name: "Priscila", idade: 10 }
+   ];
+
    const resultadoFiltrado = db.table(dados).where('idade', '>', 18).get();
+
    console.table(resultadoFiltrado);
