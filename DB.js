@@ -4,11 +4,11 @@ Descrição: O DB.js é uma biblioteca JavaScript poderosa e eficiente que simpl
 Autor: Paulo Leonardo da Silva Cassimiro
 Licença: MIT
 Doc: https://pauloleo.gitbook.io/db.js/
-Versão:1.0.0
+Versão:1.3.0
 */
-const Model = function (array = [], primaryKey = 'id') {
+const Model = function (array = []) {
 
-    this.primaryKey = primaryKey;
+    this.primaryKey = 'CodeKeyAutoDB';
 
     try {
         if (!Array.isArray(array))
@@ -24,6 +24,14 @@ const Model = function (array = [], primaryKey = 'id') {
     this.groupBy;
 };
 
+Model.prototype.deletePrimaryKey = function(arr)
+{
+    for (let i = 0; i < arr.length; i++) 
+    {
+        delete(arr[i][this.primaryKey]);
+    }
+    return arr;
+};
 
 Model.prototype.isIndexArray = function (array) {
     let index = array[0] ?? false;
@@ -31,7 +39,7 @@ Model.prototype.isIndexArray = function (array) {
 };
 
 /*
-  Adciona o ID automaticamente caso não exista
+  Adiciona o ID automaticamente caso não exista
 */
 Model.prototype.addPrimaryKeyIfExists = function (arr) {
     let data = [];
@@ -45,18 +53,10 @@ Model.prototype.addPrimaryKeyIfExists = function (arr) {
         }
 
     } else {
-
-        let existsId = (arr.length >= 1) ? (!arr[0].hasOwnProperty(this.primaryKey)) : false;
-
-        if (existsId) {
-
-            for (let i = 0; i < arr.length; i++) {
-                let value = arr[i];
-                value[this.primaryKey] = (i + 1);
-                data.push(value);
-            }
-        } else {
-            data = arr;
+        for (let i = 0; i < arr.length; i++) {
+            let value = { ...arr[i] };
+            value[this.primaryKey] = (i + 1);
+            data.push(value);
         }
     }
     return data;
@@ -80,27 +80,20 @@ Model.prototype.addCol = function (name, value = null) {
 
 Model.prototype.addRow = function (num = 1, data) {
 
-    let auto = false;
     let current = (this.array.length >= 1) ? this.array[0] : {};
-    if (!data) { auto = true; } else {
-        if (data.hasOwnProperty(this.primaryKey)) {
-            auto = false;
-        }
-    }
-
     data = data ? data : current;
 
     let rows = this.array;
     let size = rows.length;
 
+    if (size == 0) 
+    {
+        this.array = [data];
+    }
+
     for (let i = 0; i < num; i++) {
         let newRow = { ...data };
-
-        if (auto) {
-            let id = `${size + i + 1}`;
-            newRow[this.primaryKey] = parseInt(id);
-        }
-
+        newRow[this.primaryKey] = (size + i + 1);
         rows.push(newRow);
     }
 
@@ -387,7 +380,7 @@ Model.prototype.exists = function () {
 };
 
 Model.prototype.call = function (func) {
-    let results = this.get();
+    let results = this.all();
     let check = (results.length >= 1);
     if (check) {
         if (typeof func === 'function')
@@ -400,6 +393,13 @@ Model.prototype.has = function () {
     return (results.length >= 1) ? results : false;
 };
 
+Model.prototype.all = function (json=false) 
+{
+    let results = [...this.get()];
+    results = this.deletePrimaryKey(results);
+    return json ? JSON.stringify(results) : results;
+};
+
 Model.prototype.except = function (excepts) {
     excepts = Array.isArray(excepts) ? excepts : excepts.split(',');
     let results = [...this.get()];
@@ -410,7 +410,7 @@ Model.prototype.except = function (excepts) {
             }
         }
     }
-    return results;
+    return this.deletePrimaryKey(results);
 };
 
 Model.prototype.only = function (onlys) {
@@ -427,7 +427,7 @@ Model.prototype.only = function (onlys) {
         }
         results.push(value);
     }
-    return results;
+    return this.deletePrimaryKey(results);
 };
 
 
@@ -574,7 +574,7 @@ Model.prototype.delete = function () {
             data.push(row);
         }
     }
-    return data;
+    return this.deletePrimaryKey(data);
 };
 
 Model.prototype.update = function (values) {
@@ -600,7 +600,7 @@ Model.prototype.update = function (values) {
         }
         data.push(row);
     }
-    return data;
+    return this.deletePrimaryKey(data);
 };
 
 const db = new Model;
