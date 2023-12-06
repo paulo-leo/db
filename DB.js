@@ -102,8 +102,8 @@ Model.prototype.addRow = function (num = 1, data) {
 };
 
 
-Model.prototype.table = function (value, primaryKey = 'id') {
-    let obj = new Model(value, primaryKey);
+Model.prototype.table = function (value) {
+    let obj = new Model(value);
     return obj;
 };
 

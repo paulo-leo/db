@@ -21,13 +21,16 @@ Consulte a [documentação completa](https://pauloleo.gitbook.io/db.js/) para ob
    import { db } from 'pl-db-js';
 
    const dados = [
+    { name: "carla", idade: 27 },
     { name: "Paulo", idade: 18 },
     { name: "Leonardo", idade: 15 },
+    { name: "Yago", idade: 41 },
     { name: "Maria", idade: 19 },
-    { name: "Priscila", idade: 10 }
+    { name: "Priscila", idade: 10 },
+    { name: "Fernanda", idade: 20 }
    ];
 
-   const resultadoFiltrado = db.table(dados).where('idade', '>', 18).get();
+   const resultadoFiltrado = db.table(dados).where('idade', '>', 18).all();
 
    console.table(resultadoFiltrado);
 ```
