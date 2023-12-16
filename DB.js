@@ -4,7 +4,7 @@ Descrição: O DB.js é uma biblioteca JavaScript poderosa e eficiente que simpl
 Autor: Paulo Leonardo da Silva Cassimiro
 Licença: MIT
 Doc: https://pauloleo.gitbook.io/db.js/
-Versão:1.3.0
+Versão:1.4.0
 */
 const Model = function (array = []) {
 
@@ -24,11 +24,9 @@ const Model = function (array = []) {
     this.groupBy;
 };
 
-Model.prototype.deletePrimaryKey = function(arr)
-{
-    for (let i = 0; i < arr.length; i++) 
-    {
-        delete(arr[i][this.primaryKey]);
+Model.prototype.deletePrimaryKey = function (arr) {
+    for (let i = 0; i < arr.length; i++) {
+        delete (arr[i][this.primaryKey]);
     }
     return arr;
 };
@@ -86,8 +84,7 @@ Model.prototype.addRow = function (num = 1, data) {
     let rows = this.array;
     let size = rows.length;
 
-    if (size == 0) 
-    {
+    if (size == 0) {
         this.array = [data];
     }
 
@@ -297,6 +294,26 @@ Model.prototype.addSelect = function (name) {
 /*
   Função auxiliadora para seleção
 */
+Model.prototype.rowAsValue = function (col, row) {
+    col = (Array.isArray(col)) ? col : [col];
+
+    let name = col[0];
+    name = name.replace(/ as /gi, ':');
+    let as = name.split(':');
+    let key = as[0];
+    name = as[1] ?? as[0];
+
+    let func = col[1] ?? undefined;
+    let value = null;
+
+    if (typeof func === 'function') {
+        value = func(row[key], row);
+    } else {
+        value = row[key] ?? null;
+    }
+    return [name, value];
+};
+
 Model.prototype.getSelects = function () {
     let data = this.array;
     let newData = [];
@@ -309,30 +326,10 @@ Model.prototype.getSelects = function () {
     for (let i = 0; i < data.length; i++) {
         let values = {};
         for (let k = 0; k < select.length; k++) {
-            let key = select[k];
-
-
-            if (Array.isArray(key)) {
-
-                let k1 = key[0];
-                let func = key[1] ?? null;
-                let as = k1.split(':');
-                k1 = as[0];
-                let name = as[1] ?? k1;
-
-                if (typeof func === 'function') {
-                    values[name] = func(data[i][k1]);
-                } else {
-
-                    values[name] = func;
-                }
-
-            } else {
-                let as = key.split(':');
-                key = as[0];
-                let name = as[1] ?? key;
-                values[name] = data[i][key];
-            }
+            let sel = this.rowAsValue(select[k], data[i]);
+            let name = sel[0];
+            let value = sel[1];
+            values[name] = value;
         }
         newData.push(values);
     }
@@ -388,13 +385,22 @@ Model.prototype.call = function (func) {
     }
 };
 
+Model.prototype.calc = function (func) {
+    let results = this.all();
+    let value = 0;
+    if (typeof func === 'function') {
+        let calc = func(results);
+        if (!isNaN(calc)) value = calc;
+    }
+    return value;
+};
+
 Model.prototype.has = function () {
     let results = this.get();
     return (results.length >= 1) ? results : false;
 };
 
-Model.prototype.all = function (json=false) 
-{
+Model.prototype.all = function (json = false) {
     let results = [...this.get()];
     results = this.deletePrimaryKey(results);
     return json ? JSON.stringify(results) : results;
