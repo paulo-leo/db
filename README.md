@@ -10,6 +10,13 @@ npm i pl-db-js
 
 ```
 
+##Atenção:
+Embora o DB.js não tenha sido inicialmente planejado para ser compatível com TypeScript, é possível utilizá-lo em projetos TypeScript sem problemas. No entanto, para evitar alertas no Intellisense, é recomendado adicionar a seguinte linha acima da declaração de importação do DB.js: // @ts-ignore.
+   ```javascript
+   // @ts-ignore
+   import { db } from 'pl-db-js';
+```
+
 ## Documentação
 
 Consulte a [documentação completa](https://pauloleo.gitbook.io/db.js/) para obter detalhes sobre a utilização, métodos disponíveis e exemplos de uso do DB.js.
